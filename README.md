@@ -2,5 +2,5 @@
 Small improvements to keyboard bindings for commonly used sites
 
 # Build instructions:
-npm install
+npm install;
 webpack
