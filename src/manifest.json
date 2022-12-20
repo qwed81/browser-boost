@@ -1,0 +1,13 @@
+{
+	"manifest_version": 2,
+	"name": "Browser Boost",
+	"version": "1.0.0",
+	"content_scripts": [
+		{ 
+			"matches": ["https://www.google.com/*", "<all_urls>"],
+			"js": ["google.js"],
+			"css": ["google.css"]
+		}
+	]
+
+}
