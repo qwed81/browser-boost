@@ -1,12 +1,12 @@
 {
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "jcox.12.2002@gmail.com"
+			"id": "{1cad1fa4-745f-4aee-adc5-544b2dfaea7b}"
 		}
 	},
 	"manifest_version": 2,
 	"name": "Browser Boost",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"content_scripts": [
 		{ 
 			"matches": ["https://www.google.com/*", "<all_urls>"],
