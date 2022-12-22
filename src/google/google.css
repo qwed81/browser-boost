@@ -1,4 +1,4 @@
 .boost-selected {
-	padding: 10px;
-	border: 2px solid #B0B0B0;
+	border-bottom: 1px solid white !important;
+	color: white !important;
 }
