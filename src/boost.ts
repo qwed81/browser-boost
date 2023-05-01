@@ -83,7 +83,7 @@ function getLinks() {
 			newElem.style.top = `${rect.y + window.scrollY}px`;
 
 			let name = generateName(currentGenerationIndex);
-			newElem.innerHTML = name;
+			newElem.innerText = name;
 			currentGenerationIndex += 1;
 			nameMap.set(name, elem);
 
