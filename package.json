@@ -1,16 +1,19 @@
 {
-  "name": "browser-automation",
-  "version": "1.0.0",
-  "description": "scripts for sites that handle common tasks and make them easier",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Joshua Cox",
-  "license": "MIT",
-  "devDependencies": {
-    "copy-webpack-plugin": "^11.0.0",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
-  }
+	"name": "browser-automation",
+	"version": "1.0.0",
+	"description": "scripts for sites that handle common tasks and make them easier",
+	"main": "index.js",
+	"scripts": {
+		"build": "webpack",
+		"watch": "webpack --watch"
+	},
+	"author": "Joshua Cox",
+	"license": "MIT",
+	"devDependencies": {
+		"copy-webpack-plugin": "^11.0.0",
+		"ts-loader": "^9.4.2",
+		"typescript": "^5.0.4",
+		"webpack": "^5.75.0",
+		"webpack-cli": "^5.0.1"
+	}
 }
