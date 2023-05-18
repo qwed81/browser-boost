@@ -1,0 +1,35 @@
+#boost-status-bar {
+	z-index: 1000;
+	width: 30%;
+	height: 1.5px;
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: blue;
+}
+
+#boost-search-bar {
+	position: fixed;
+	background-color: blue;
+	bottom: 0;
+	left: 50%;
+	min-width: 1rem;
+	min-height: 1rem;
+	text-align: center;
+	z-index: 1000;
+	font-size: 1rem;
+	font-weight: bold;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.boost-link-id {
+	position: absolute;
+	background-color: blue;
+	z-index: 1000;
+	font-size: 1rem;
+	font-weight: bold;
+	border-radius: 5px;
+	padding: 5px;
+}

@@ -15,25 +15,20 @@ if (left.length != right.length) {
 	throw new Error('Key arrays are not the same length');
 }
 
-function generateName(index: number) {
-	if (index == 0) {
-		return 'h';
-	}
-
-	let nextIsRight = true;
-	let output = '';
-	let len = left.length;
+function generateName(index: number): string {
+	let name = "";
+	let isNextLeft = false;
 	while (index > 0) {
-		if (nextIsRight) {
-			output = right[index % len] + output;
+		if (isNextLeft == true) {
+			name = left[index % left.length] + name;
 		} else {
-			output = left[index % len] + output;
+			name = right[index % left.length] + name;
 		}
-		index = Math.floor(index / len);
-		nextIsRight = !nextIsRight;
+		index = Math.floor(index / left.length);
+		isNextLeft = !isNextLeft;
 	}
 
-	return output;
+	return name;
 }
 
 let elemCache: Map<HTMLElement, HTMLElement> = new Map();
@@ -49,15 +44,13 @@ document.body.append(root);
 // status bar
 let statusBar = document.createElement('div');
 statusBar.id = 'boost-status-bar';
-statusBar.style.zIndex = '1000';
-statusBar.style.width = '30%';
-statusBar.style.height = '1.5px';
-statusBar.style.position = 'fixed';
-statusBar.style.bottom = '0';
-statusBar.style.left = '50%';
-statusBar.style.transform = 'translateX(-50%)';
-statusBar.style.backgroundColor = 'blue';
 document.body.append(statusBar);
+
+// search bar
+let searchBar = document.createElement('span');
+searchBar.id = 'boost-search-bar';
+searchBar.style.display = 'none';
+document.body.append(searchBar);
 
 function setStatusBarState(active: boolean) {
 	let statusBar = document.getElementById('boost-status-bar');
@@ -78,7 +71,8 @@ function getLinks() {
 		let cachedElem: HTMLElement | null = elemCache.get(elem); 
 		if (cachedElem == null) {
 			let newElem = document.createElement('div');
-			setLinkIdentifierStyle(newElem);
+			newElem.classList.add('boost-link-id');
+
 			newElem.style.left = `${rect.x + window.scrollX}px`;
 			newElem.style.top = `${rect.y + window.scrollY}px`;
 
@@ -102,6 +96,10 @@ let searchedText ='';
 function stopSearching() {
 	searching = false;
 	searchedText = '';
+	let searchBar = document.getElementById('boost-search-bar');
+	searchBar.innerText = '';
+	searchBar.style.display = 'none';
+
 	root.style.display = 'none';
 }
 
@@ -113,25 +111,27 @@ function handleKeyDown(e: KeyboardEvent) {
 	}
 
 	// ctrl + ' to start searching
-	if (e.key == '\'' && e.ctrlKey && searching == false) {
+	if (e.key == '\'' && e.ctrlKey) {
+		// restart the search if it is true
+		if (searching == true) {
+			stopSearching();
+		}
 		root.style.display = 'block';
 		e.preventDefault();
 		getLinks();
 		searching = true;
+		searchBar.style.display = 'block';
 		return;
 	} else if (e.key == 'Escape' && searching == true) { // esc to stop searching
 		e.preventDefault();
 		stopSearching();
 		return;
-	}
-
-	if (searching) {
-		// all control keys start with upper case, so we can just ignore them
-		if (e.key[0] >= 'a' && e.key[0] <= 'z') {
-			searchedText += e.key[0];
-		}
-
+	} else if (e.key == 'Enter' && searching == true) { // enter to navigate to link
+		e.preventDefault();
 		let selectedElement = nameMap.get(searchedText);
+		console.log(searchedText);
+		stopSearching();
+
 		if (selectedElement != null) {
 			let href = selectedElement.getAttribute('href');
 			if (href) {
@@ -139,8 +139,14 @@ function handleKeyDown(e: KeyboardEvent) {
 				window.location.href = href;
 			}
 		}
-
+	}
+	else if (e.key == 'Backspace' && searching == true) {
+		searchedText = searchedText.slice(0, searchedText.length - 1);
+		searchBar.innerText = searchedText;
+	} else if (e.key[0] >= 'a' && e.key[0] <= 'z' && searching == true) {
 		e.preventDefault();
+		searchedText += e.key[0];
+		searchBar.innerText = searchedText;
 	}
 }
 
@@ -182,14 +188,14 @@ document.body.addEventListener('keydown', documentKeyDown);
 
 // run in the background so if searching update the position of
 // all of the items as well as change status bar
-let last_active: Element | null = null;
+let lastActive: Element | null = null;
 setInterval(() => {
-	if (!searching && document.activeElement == last_active) {
+	if (!searching && document.activeElement == lastActive) {
 		return;
 	}
 
-	last_active = document.activeElement;
-	setStatusBarState(last_active == document.body);
+	lastActive = document.activeElement;
+	setStatusBarState(lastActive == document.body);
 	getLinks();
 }, 50);
 
